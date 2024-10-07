@@ -1,0 +1,82 @@
+---
+title: "Churn Category Bar Plot"
+author: "Shantanu Aggarwal"
+date: '2024-10-06'
+output: html_document
+---
+
+### Required Package Installation
+
+#Installation of packages have been commented as i have already have those packages are being installed but these packages will be useful for this small program
+
+```{r setup, include=TRUE}
+# Installing all the required packages for this program
+
+#install.packages("tidyverse")
+#install.packages("dplyr")
+#install.packages("tidyr")
+#install.packages("forcats")
+#install.packages("ggplot2")
+#install.packages("knitr")
+#install.packages("readr")
+#install.packages(c('readxl','skimr','janitor','rlang','rmarkdown','Tmisc','tidyselect'))
+library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(forcats)
+library(ggplot2)
+library(knitr)
+library(readr)
+library(readxl)
+library(skimr)
+library(janitor)
+library(rlang)
+library(rmarkdown)
+library(Tmisc)
+library(tidyselect)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+## import data and High level data information
+
+Below code snippet to import the data from data source that is CSV file, Please download the data source csv file from provided location below and import this dataset.
+
+```{r customer}
+customer_churn_df <- read_csv("C:/Users/shant/Documents/R Programs/Telecom Customer Churn/telecom_customer_churn.csv")
+
+customer_churn <- customer_churn_df%>% na.omit()  #omitted the blank values from Dataset
+
+View(customer_churn)
+
+glimpse(customer_churn) #High level structure of Dataset
+
+```
+
+## Including Plots
+
+Below code snippet is to create the bar chart for churn category by considering the gender and offer selection
+
+```{r pressure, echo=TRUE}
+# Below code snippet to generate the graph plot with specific visual category
+p1 <- ggplot(data = customer_churn) + 
+                
+      geom_bar(mapping = aes(x = ChurnCategory, fill = Gender), color = "Black") +
+                        facet_wrap(~Offer) 
+#Below code snippet to append the plot title along with X and Y axis label
+p2 <- p1 + labs(title = "Churn Count according to Churn Category Offer wise", x = "Churn Category", y = "Total Churn Count")                        
+
+# Below code line is to modify the axis text, title font color, style, text size etc.
+Finalplot <- p2 + theme(strip.text.x = element_text(face = "bold", color = "DarkRed", size = 12),
+                          axis.title = element_text(color = "Red", face = "bold", size = 15),
+                          axis.text = element_text(color = "darkgreen", size = 12,  angle = 30),
+                          legend.title = element_text(face = "bold"),
+                          legend.text = element_text(face = "bold.italic", color = "brown4", size = 10),
+                          title = element_text(size = 15))
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
